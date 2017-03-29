@@ -59,18 +59,65 @@ charmap = {
     'Dizzy':'dzy'
 };
 
-
-
-
-$.get('data/data.csv',function(data){
-    var dataStr = new String(data);
-    maindiv = $("#cont");
-    maindiv.append('<select id="player"></select>');
-    $.csv.toArrays(dataStr).forEach(function (element) {
-        $('#player').append('<option value="' + element[1] + '">' + element[0] + '</option>');
+function getCharName(japName){
+    result = '';
+    Object.keys(chars).forEach(function (k) {
+        var v = chars[k];
+        if (japName == v){
+            result = k;
+        }
+        else if (v.startsWith(japName) || japName.startsWith(v)){
+            result = k;
+        }
+        else if (v.indexOf(japName) != -1 || japName.indexOf(v) != -1){
+            result = k;
+        }
     });
-    maindiv.append('<select id="character"></select>');
+    if (result == ''){console.log(chars.Haehyun,chars.Jam,japName);}
+    return result;
+}
+
+$('document').ready(function(){
+
+    var el = $( '<div></div>' );
+
+    $.get('data/data.csv',function(data){
+        var dataStr = new String(data);
+        $.csv.toArrays(dataStr).forEach(function (element) {
+            $('#player').append('<option value="' + element[1] + '">' + element[0] + '</option>');
+        });
+
+    },dataType='text');
+
     Object.keys(charmap).forEach(function (element) {
         $('#character').append('<option value="' + charmap[element] + '">' + element + '</option>');
     });
-},dataType='text');
+
+    $('#btn').click( function( event ) {
+        target = base_url + 'member_record_battle_view.php?user_id=' + $('#player').val() + '&character=' + $('#character').val();
+        console.log(target);
+        $.ajax({
+            type: 'GET',
+            url: target,
+            success: function (responseData, textStatus, jqXHR) {
+                $('#reslist').html('');
+                el.html(responseData.responseText);
+                $('li',el).each(function (index) {
+                    text = $(this).text();
+                    if(text.startsWith('vs')){
+                        listtext = text.slice(3).split('：');
+                        fullchar = getCharName(listtext[0]);
+                        temp = listtext[1].split('敗')[0].split('勝');
+                        win = temp[0];
+                        loss = temp[1];
+                        perc = listtext[1].split('敗')[1];
+                        $('#reslist').append('<li>' + fullchar + ' : ' + win + ' W |' + loss + ' L ' + perc + '</li>');
+                    }
+                })
+            },
+            error: function (responseData, textStatus, errorThrown) {
+                alert('POST failed.');
+            }
+        });
+    });
+});
