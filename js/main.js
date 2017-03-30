@@ -26,12 +26,14 @@ chars = {
     "Jack-O": "ジャック・オー",
     "Haehyun": "琴 慧弦",
     "Raven": "レイヴン",
-    "Dizzy": "ディズィー"
+    "Dizzy": "ディズィー",
+    "Baiken":"梅喧",
+    "Answer":"アンサー"
 };
 
 list_chars = ['sol', 'kyk', 'may', 'mll', 'zat', 'pot', 'chp', 'fau', 'axl',
     'ven', 'sly', 'ino', 'bed', 'ram', 'sin', 'elp', 'jhn', 'leo',
-    'jko', 'jam', 'kum', 'rvn', 'dzy'];
+    'jko', 'jam', 'kum', 'rvn', 'dzy','bkn','ans'];
 
 charmap = {
     'Sol':'sol',
@@ -56,7 +58,9 @@ charmap = {
     'Haehyun':'kum',
     'Jam':'jam',
     'Raven':'rvn',
-    'Dizzy':'dzy'
+    'Dizzy':'dzy',
+    'Baiken':'bkn',
+    'Answer':'ans'
 };
 
 function getCharName(japName){
