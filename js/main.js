@@ -100,7 +100,7 @@ $('document').ready(function(){
     $('#btn').click(async function( event ) {
         target = base_url + 'member_record_battle_view.php?user_id=' + $('#player').val() + '&character=' + $('#character').val();
         console.log(target);
-        const response = await fetch(target);
+        const response = await fetch(target,{mode:"cors"});
         const body = await response.text();
         $('#reslist').html('');
         el.html(body);
