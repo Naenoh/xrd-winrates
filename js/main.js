@@ -2,7 +2,7 @@
  * Created by Arnaud on 29/03/2017.
  */
 
-base_url = "http://www.ggxrd.com/pg2/";
+base_url = "https://cors-anywhere.herokuapp.com/http://www.ggxrd.com/pg2/";
 chars = {
     "Sol": "ソル",
     "Ky": "カイ",
@@ -100,28 +100,21 @@ $('document').ready(function(){
     $('#btn').click( function( event ) {
         target = base_url + 'member_record_battle_view.php?user_id=' + $('#player').val() + '&character=' + $('#character').val();
         console.log(target);
-        $.ajax({
-            type: 'GET',
-            url: target,
-            success: function (responseData, textStatus, jqXHR) {
-                $('#reslist').html('');
-                el.html(responseData.responseText);
-                $('li',el).each(function (index) {
-                    text = $(this).text();
-                    if(text.startsWith('vs')){
-                        listtext = text.slice(3).split('：');
-                        fullchar = getCharName(listtext[0]);
-                        temp = listtext[1].split('敗')[0].split('勝');
-                        win = temp[0];
-                        loss = temp[1];
-                        perc = listtext[1].split('敗')[1];
-                        $('#reslist').append('<li>' + fullchar + ' : ' + win + ' W |' + loss + ' L ' + perc + '</li>');
-                    }
-                })
-            },
-            error: function (responseData, textStatus, errorThrown) {
-                alert('POST failed.');
+        const response = await fetch(target);
+        const body = await response.text();
+        $('#reslist').html('');
+        el.html(body);
+        $('li',el).each(function (index) {
+            text = $(this).text();
+            if(text.startsWith('vs')){
+                listtext = text.slice(3).split('：');
+                fullchar = getCharName(listtext[0]);
+                temp = listtext[1].split('敗')[0].split('勝');
+                win = temp[0];
+                loss = temp[1];
+                perc = listtext[1].split('敗')[1];
+                $('#reslist').append('<li>' + fullchar + ' : ' + win + ' W |' + loss + ' L ' + perc + '</li>');
             }
-        });
+        })
     });
 });
