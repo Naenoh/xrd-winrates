@@ -97,7 +97,7 @@ $('document').ready(function(){
         $('#character').append('<option value="' + charmap[element] + '">' + element + '</option>');
     });
 
-    $('#btn').click( function( event ) {
+    $('#btn').click(async function( event ) {
         target = base_url + 'member_record_battle_view.php?user_id=' + $('#player').val() + '&character=' + $('#character').val();
         console.log(target);
         const response = await fetch(target);
